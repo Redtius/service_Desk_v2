@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: service-desk-api
+Version: 0.1.0
+Summary: FastAPI backend for the Service Desk platform.
+Requires-Python: >=3.10
+Requires-Dist: fastapi
+Requires-Dist: uvicorn[standard]
+Requires-Dist: sqlmodel
+Requires-Dist: passlib[bcrypt]
+Requires-Dist: python-dotenv
+Requires-Dist: python-jose[cryptography]
+Requires-Dist: pydantic-settings
+Requires-Dist: python-multipart>=0.0.20
+Requires-Dist: crewai
+Requires-Dist: crewai-tools>=0.49.0

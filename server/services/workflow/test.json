@@ -1,0 +1,164 @@
+{
+  "example_workflows_v2": [
+    {
+      "metadata": {
+        "name": "Customer Support Triage",
+        "description": "An automated workflow to handle initial customer support queries, routing them to an AI agent for simple issues or escalating to a human for complex ones.",
+        "version": "1.0.0",
+        "created": "2025-07-08T16:10:00.000Z"
+      },
+      "elements": [
+        {
+          "id": "start-1",
+          "type": "start",
+          "name": "Start Node",
+          "icon": "Play",
+          "description": "Workflow entry point",
+          "color": "bg-success-100 border-success-300",
+          "x": 50, "y": 200, "width": 180, "height": 70,
+          "properties": { "label": "New Support Ticket" }
+        },
+        {
+          "id": "decision-1",
+          "type": "decision",
+          "name": "Decision Point",
+          "icon": "GitFork",
+          "description": "Conditional logic branch",
+          "color": "bg-yellow-100 border-yellow-300",
+          "x": 280, "y": 200, "width": 180, "height": 90,
+          "properties": {
+            "label": "Check Issue Type",
+            "conditions": [
+              { "label": "Technical Issue", "handleId": "technical" },
+              { "label": "Billing Question", "handleId": "billing" }
+            ]
+          }
+        },
+        {
+          "id": "agent-1",
+          "type": "agent",
+          "name": "Automation Agent",
+          "icon": "Bot",
+          "description": "AI agent processing",
+          "color": "bg-secondary-100 border-secondary-300",
+          "x": 510, "y": 300, "width": 180, "height": 70,
+          "properties": { "label": "Handle Billing Question" }
+        },
+        {
+          "id": "room-1",
+          "type": "room_creation",
+          "name": "Room Creation",
+          "icon": "MessageCircle",
+          "description": "Create support chat room",
+          "color": "bg-blue-100 border-blue-300",
+          "x": 510, "y": 100, "width": 180, "height": 70,
+          "properties": { "label": "Create Support Room" }
+        },
+        {
+          "id": "escalate-1",
+          "type": "escalation",
+          "name": "Escalation Trigger",
+          "icon": "AlertTriangle",
+          "description": "Escalate to human expert",
+          "color": "bg-accent-100 border-accent-300",
+          "x": 740, "y": 100, "width": 180, "height": 70,
+          "properties": { "label": "Escalate to Tier 2" }
+        },
+        {
+          "id": "end-human",
+          "type": "end",
+          "name": "End Node",
+          "icon": "Square",
+          "description": "Workflow completion",
+          "color": "bg-error-100 border-error-300",
+          "x": 970, "y": 100, "width": 180, "height": 70,
+          "properties": { "label": "Case Handled by Human" }
+        },
+        {
+          "id": "end-ai",
+          "type": "end",
+          "name": "End Node",
+          "icon": "Square",
+          "description": "Workflow completion",
+          "color": "bg-error-100 border-error-300",
+          "x": 740, "y": 300, "width": 180, "height": 70,
+          "properties": { "label": "Case Resolved by AI" }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "start-1", "target": "decision-1" },
+        { "id": "e2", "source": "decision-1", "sourceHandle": "technical", "target": "room-1" },
+        { "id": "e3", "source": "decision-1", "sourceHandle": "billing", "target": "agent-1" },
+        { "id": "e4", "source": "room-1", "target": "escalate-1" },
+        { "id": "e5", "source": "escalate-1", "target": "end-human" },
+        { "id": "e6", "source": "agent-1", "target": "end-ai" }
+      ]
+    },
+    {
+      "metadata": {
+        "name": "User Onboarding Follow-up",
+        "description": "A workflow to send a follow-up email to new users 3 days after they sign up and verify their email.",
+        "version": "1.1.0",
+        "created": "2025-07-08T16:15:00.000Z"
+      },
+      "elements": [
+        {
+          "id": "start-2", "type": "start", "name": "Start Node", "icon": "Play", "description": "Workflow entry point", "color": "bg-success-100 border-success-300", "x": 50, "y": 150, "width": 180, "height": 70,
+          "properties": { "label": "User Signs Up" }
+        },
+        {
+          "id": "verify-1", "type": "verification", "name": "Verification Step", "icon": "CheckCircle", "description": "Validate conditions", "color": "bg-success-100 border-success-300", "x": 280, "y": 150, "width": 180, "height": 80,
+          "properties": { "label": "Is Email Verified?", "condition": "user.isEmailVerified == true", "timeoutSeconds": 86400 }
+        },
+        {
+          "id": "delay-1", "type": "delay_timer", "name": "Delay Timer", "icon": "Clock", "description": "Wait for specified time", "color": "bg-blue-100 border-blue-300", "x": 510, "y": 50, "width": 180, "height": 70,
+          "properties": { "label": "Wait 3 Days", "duration": 3, "unit": "days" }
+        },
+        {
+          "id": "action-1", "type": "action", "name": "Action Block", "icon": "Zap", "description": "Execute specific action", "color": "bg-primary-100 border-primary-300", "x": 740, "y": 50, "width": 180, "height": 70,
+          "properties": { "label": "Send Welcome Email", "actionType": "send_email", "templateId": "welcome_series_day_3" }
+        },
+        {
+          "id": "end-success", "type": "end", "name": "End Node", "icon": "Square", "description": "Workflow completion", "color": "bg-error-100 border-error-300", "x": 970, "y": 50, "width": 180, "height": 70,
+          "properties": { "label": "Onboarding Complete" }
+        },
+        {
+          "id": "end-fail", "type": "end", "name": "End Node", "icon": "Square", "description": "Workflow completion", "color": "bg-error-100 border-error-300", "x": 510, "y": 250, "width": 180, "height": 70,
+          "properties": { "label": "Verification Timed Out" }
+        }
+      ],
+      "edges": [
+        { "id": "e1", "source": "start-2", "target": "verify-1" },
+        { "id": "e2", "source": "verify-1", "sourceHandle": "onSuccess", "target": "delay-1" },
+        { "id": "e3", "source": "verify-1", "sourceHandle": "onFailure", "target": "end-fail" },
+        { "id": "e4", "source": "delay-1", "target": "action-1" },
+        { "id": "e5", "source": "action-1", "target": "end-success" }
+      ]
+    },
+    {
+      "metadata": {
+        "name": "IT Service Request: Password Reset",
+        "description": "An internal workflow for handling employee password reset requests, with 2FA verification and a failure path.",
+        "version": "1.0.0",
+        "created": "2025-07-08T16:20:00.000Z"
+      },
+      "elements": [
+         { "id": "start-3", "type": "start", "name": "Start Node", "icon": "Play", "description": "Workflow entry point", "color": "bg-success-100 border-success-300", "x": 50, "y": 150, "width": 180, "height": 70, "properties": { "label": "Reset Request Received" } },
+         { "id": "action-2", "type": "action", "name": "Action Block", "icon": "Zap", "description": "Execute specific action", "color": "bg-primary-100 border-primary-300", "x": 280, "y": 150, "width": 180, "height": 70, "properties": { "label": "Send 2FA Code" } },
+         { "id": "verify-2", "type": "verification", "name": "Verification Step", "icon": "CheckCircle", "description": "Validate conditions", "color": "bg-success-100 border-success-300", "x": 510, "y": 150, "width": 180, "height": 80, "properties": { "label": "Validate 2FA Code", "maxAttempts": 3 } },
+         { "id": "action-3", "type": "action", "name": "Action Block", "icon": "Zap", "description": "Execute specific action", "color": "bg-primary-100 border-primary-300", "x": 740, "y": 50, "width": 180, "height": 70, "properties": { "label": "Perform Password Reset" } },
+         { "id": "escalate-2", "type": "escalation", "name": "Escalation Trigger", "icon": "AlertTriangle", "description": "Escalate to human expert", "color": "bg-accent-100 border-accent-300", "x": 740, "y": 250, "width": 180, "height": 80, "properties": { "label": "Lock Account & Alert IT Security" } },
+         { "id": "end-success", "type": "end", "name": "End Node", "icon": "Square", "description": "Workflow completion", "color": "bg-error-100 border-error-300", "x": 970, "y": 50, "width": 180, "height": 70, "properties": { "label": "Reset Successful" } },
+         { "id": "end-failure", "type": "end", "name": "End Node", "icon": "Square", "description": "Workflow completion", "color": "bg-error-100 border-error-300", "x": 970, "y": 250, "width": 180, "height": 70, "properties": { "label": "Reset Failed" } }
+      ],
+      "edges": [
+        { "id": "e1", "source": "start-3", "target": "action-2" },
+        { "id": "e2", "source": "action-2", "target": "verify-2" },
+        { "id": "e3", "source": "verify-2", "sourceHandle": "onSuccess", "target": "action-3" },
+        { "id": "e4", "source": "verify-2", "sourceHandle": "onFailure", "target": "escalate-2" },
+        { "id": "e5", "source": "action-3", "target": "end-success" },
+        { "id": "e6", "source": "escalate-2", "target": "end-failure" }
+      ]
+    }
+  ]
+}
